@@ -64,7 +64,7 @@ public class PersonManagerImpl implements PersonManager {
         List<Person> persons = new LinkedList<>();
         try {
             ResultSet rs = getAllPersonsStmt.executeQuery();
-
+            
             while (rs.next()) {
                 Person p = new Person();
                 p.setId(rs.getInt("id"));

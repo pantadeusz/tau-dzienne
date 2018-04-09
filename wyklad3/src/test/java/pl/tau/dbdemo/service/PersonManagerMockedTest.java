@@ -34,22 +34,24 @@ public class PersonManagerMockedTest {
     @Mock
     PreparedStatement selectStatementMock;
 
+
+
     @Before
-    public void setupDatabase() throws SQLException { 
+    public void setupDatabase() throws SQLException {
 
         when(connectionMock.prepareStatement("INSERT INTO Person (name, yob) VALUES (?, ?)"))
-            .thenReturn(insertStatementMock);
-        when(connectionMock.prepareStatement("SELECT id, name, yob FROM Person"))
-            .thenReturn(selectStatementMock);
+                .thenReturn(insertStatementMock);
+        when(connectionMock.prepareStatement("SELECT id, name, yob FROM Person")).thenReturn(selectStatementMock);
         personManager = new PersonManagerImpl();
         personManager.setConnection(connectionMock);
         verify(connectionMock).prepareStatement("INSERT INTO Person (name, yob) VALUES (?, ?)");
         verify(connectionMock).prepareStatement("SELECT id, name, yob FROM Person");
     }
+
     @Test
     public void checkAdding() throws Exception {
         when(insertStatementMock.executeUpdate()).thenReturn(1);
-     
+
         Person person = new Person();
         person.setName("Waclaw");
         person.setYob(1980);
@@ -58,11 +60,50 @@ public class PersonManagerMockedTest {
         verify(insertStatementMock, times(1)).setInt(2, 1980);
         verify(insertStatementMock).executeUpdate();
     }
+
+    abstract class AbstractResultSet implements ResultSet {
+        int i = 0;
+
+        @Override
+        public int getInt(String s) throws SQLException {
+            return 1;
+        }
+        @Override
+        public String getString(String columnLabel) throws SQLException {
+            return "Majran";
+        }
+        @Override
+        public boolean next() throws SQLException {
+            if (i == 1)
+                return false;
+            i++;
+            return true;
+        }
+    }
+
+    @Test
+    public void checkGetting() throws Exception {
+        AbstractResultSet mockedResultSet = mock(AbstractResultSet.class);
+        when(mockedResultSet.next()).thenCallRealMethod();
+        when(mockedResultSet.getInt("id")).thenCallRealMethod();
+        when(mockedResultSet.getString("name")).thenCallRealMethod();
+        when(mockedResultSet.getInt("yob")).thenCallRealMethod();
+        when(selectStatementMock.executeQuery()).thenReturn(mockedResultSet);
+
+        assertEquals(1, personManager.getAllPersons().size());
+
+        verify(selectStatementMock, times(1)).executeQuery();
+        verify(mockedResultSet, times(1)).getInt("id");
+        verify(mockedResultSet, times(1)).getString("name");
+        verify(mockedResultSet, times(1)).getInt("yob");
+        verify(mockedResultSet, times(2)).next();
+    }
+
     @Test
     public void checkAddingInOrder() throws Exception {
         InOrder inorder = inOrder(insertStatementMock);
         when(insertStatementMock.executeUpdate()).thenReturn(1);
-     
+
         Person person = new Person();
         person.setName("Waclaw");
         person.setYob(1980);
@@ -72,6 +113,7 @@ public class PersonManagerMockedTest {
         inorder.verify(insertStatementMock, times(1)).setInt(2, 1980);
         inorder.verify(insertStatementMock).executeUpdate();
     }
+
     @Test(expected = IllegalStateException.class)
     public void checkExceptionWhenAddingNullAdding() throws Exception {
         when(insertStatementMock.executeUpdate()).thenThrow(new SQLException());
