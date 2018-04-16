@@ -34,18 +34,25 @@ public class PersonApi {
 
     @RequestMapping(value = "/persons", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Person> getPersons(@RequestParam("filter") String f) throws SQLException {
+    public List<Person> getPersons(@RequestParam(value = "filter", required = false) String f) throws SQLException {
         List<Person> persons = new LinkedList<Person>();
         for (Person p : personManager.getAllPersons()) {
-            if (p.getName().contains(f))
+            if (f == null) {
                 persons.add(p);
+            } else if (p.getName().contains(f)) {
+                persons.add(p);
+            }
         }
         return persons;
     }
 
-    @RequestMapping(value = "/person", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Long addPerson(@RequestBody Person p) {
-        return new Long(personManager.addPerson(p));
+    @RequestMapping(value = "/person",
+        method = RequestMethod.POST,
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    public Person addPerson(@RequestBody Person p) {
+        if (personManager.addPerson(p) < 1) return null;
+        return p;
     }
 
     @RequestMapping(value = "/person/{id}", method = RequestMethod.DELETE)
