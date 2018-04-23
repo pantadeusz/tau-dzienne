@@ -61,7 +61,6 @@ public class PersonDbunitTest extends DBTestCase {
         ITable expectedTable = expectedDataSet.getTable("PERSON");
         Assertion.assertEquals(expectedTable, filteredTable);
         personManager.deletePerson(person); // wyczyszczenie
-
     }
 
     @Override
