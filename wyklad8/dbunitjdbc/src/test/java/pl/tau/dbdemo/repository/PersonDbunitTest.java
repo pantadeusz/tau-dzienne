@@ -38,9 +38,10 @@ public class PersonDbunitTest extends DBTestCase {
         super.setUp();
         personManager = new PersonRepositoryJdbcImpl(DriverManager.getConnection(url));
     }
+
     @Test
     public void doNothing() {
-        assertEquals(4,personManager.getAllPersons().size());
+        assertEquals(4, personManager.getAllPersons().size());
     }
 
     @Test
