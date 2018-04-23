@@ -59,8 +59,9 @@ public class PersonDbunitTest extends DBTestCase {
         ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(actualTable, new String[] { "ID" });
         IDataSet expectedDataSet = getDataSet("ds-2.xml");
         ITable expectedTable = expectedDataSet.getTable("PERSON");
-        System.out.println(filteredTable);
         Assertion.assertEquals(expectedTable, filteredTable);
+        personManager.deletePerson(person); // wyczyszczenie
+
     }
 
     @Override
