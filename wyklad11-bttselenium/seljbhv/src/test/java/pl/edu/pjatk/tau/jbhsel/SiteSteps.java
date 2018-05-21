@@ -5,6 +5,7 @@ import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -17,7 +18,7 @@ public class SiteSteps {
     }
 
     @Given("user is on helpdesk page")
-    public void userOnHelpdeskPage(){
+    public void userOnHelpdeskPage() {
 
         pages.helpdesk().open();
     }
@@ -28,13 +29,13 @@ public class SiteSteps {
         pages.helpdesk().click(linkText);
     }
 
-    @Then("the tab with text $linkText should have class $classInside")
-    public void tabWithTextAndClass(String linkText, String classInside) {
-        assertTrue( pages.helpdesk().getClassesForLink(linkText).contains(classInside));
+    @Then("the tab with text $text should be selected")
+    public void thenTheTabWithTextTagsShouldBeSelected(String text) {
+        assertTrue(pages.helpdesk().isTabSelected(text));
     }
 
-    @Then("the tab with text $linkText should not have class $classInside")
-    public void tabWithTextAndNotClass(String linkText, String classInside) {
-        assertTrue( !pages.helpdesk().getClassesForLink(linkText).contains(classInside));
+    @Then("the tab with text $text should not be selected")
+    public void thenTheTabWithTextTagsShouldNotBeSelected(String text) {
+        assertFalse(pages.helpdesk().isTabSelected(text));
     }
 }

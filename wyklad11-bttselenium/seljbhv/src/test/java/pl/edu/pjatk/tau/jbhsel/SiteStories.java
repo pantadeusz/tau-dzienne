@@ -52,7 +52,7 @@ public class SiteStories extends JUnitStories {
                 .useStoryReporterBuilder(new StoryReporterBuilder()
                         .withCodeLocation(codeLocationFromClass(embeddableClass))
                         .withDefaultFormats()
-                        .withFormats(Format.CONSOLE, Format.HTML, Format.HTML_TEMPLATE));
+                        .withFormats(Format.ANSI_CONSOLE, Format.HTML, Format.HTML_TEMPLATE));
     }
 
     @Override

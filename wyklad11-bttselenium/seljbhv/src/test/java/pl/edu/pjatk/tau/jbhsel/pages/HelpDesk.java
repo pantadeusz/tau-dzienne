@@ -30,4 +30,9 @@ public class HelpDesk extends WebDriverPage {
         WebElement e = findElement(By.partialLinkText(linkText));
         return e.getAttribute("class");
     }
+
+    public boolean isTabSelected(String tabText) {
+        WebElement e = findElement(By.partialLinkText(tabText));
+        return e.getAttribute("class").contains("tabSelected");
+    }
 }
