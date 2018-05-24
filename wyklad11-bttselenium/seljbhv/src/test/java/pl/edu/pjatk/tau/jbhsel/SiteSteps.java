@@ -29,6 +29,21 @@ public class SiteSteps {
         pages.helpdesk().click(linkText);
     }
 
+    @When("user types $searchPhrase in search field")
+    public void whenUserTypesSearchPhraseInSearchField(String searchPhrase) {
+        pages.helpdesk().setSearchText(searchPhrase);
+    }
+    
+    @Then("the article $articleName is displayed")
+    public void thenTheArticleInstrukcjeIsDisplayed(String articleName) {
+        assertTrue(pages.helpdesk().isArticlePresent(articleName));
+    }
+
+    @Then("the article $articleName is not displayed")
+    public void thenTheArticleInstrukcjeIsNotDisplayed(String articleName) {
+        assertFalse(pages.helpdesk().isArticlePresent(articleName));
+    }
+
     @Then("the tab with text $text should be selected")
     public void thenTheTabWithTextTagsShouldBeSelected(String text) {
         assertTrue(pages.helpdesk().isTabSelected(text));
@@ -38,4 +53,7 @@ public class SiteSteps {
     public void thenTheTabWithTextTagsShouldNotBeSelected(String text) {
         assertFalse(pages.helpdesk().isTabSelected(text));
     }
+
+
+
 }
