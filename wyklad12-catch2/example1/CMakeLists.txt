@@ -14,14 +14,9 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 
-
-###### catch2
-# Prepare "Catch" library for other executables
 set(CATCH_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/catch)
 add_library(Catch INTERFACE)
 target_include_directories(Catch INTERFACE ${CATCH_INCLUDE_DIR})
-
-
 
 
 install(DIRECTORY src/ DESTINATION include/testycpp
@@ -30,7 +25,6 @@ install(DIRECTORY src/ DESTINATION include/testycpp
 
 include_directories("${PROJECT_SOURCE_DIR}/src")
 
-set(app_SOURCES "a_main.cpp" )
 file(GLOB_RECURSE lib_SOURCES "src/*.cpp")
 file(GLOB_RECURSE app_TESTS "tests/*.cpp")
 
@@ -44,7 +38,7 @@ target_link_libraries(tests Catch)
 enable_testing()
 
 add_test( NAME tests 
-          COMMAND "${CMAKE_BINARY_DIR}/tests"
+          COMMAND "${CMAKE_BINARY_DIR}/tests "
           WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"  )
 
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
