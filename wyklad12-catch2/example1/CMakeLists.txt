@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 
+# env CTEST_OUTPUT_ON_FAILURE=1 make test
+
 project (testycpp CXX)
 
 set (testycpp_VERSION_MAJOR 0)
@@ -41,5 +43,7 @@ add_test( NAME tests
           COMMAND "${CMAKE_BINARY_DIR}/tests"
           WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"  )
 
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
+                  DEPENDS tests)
 
 

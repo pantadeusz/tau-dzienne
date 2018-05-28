@@ -6,5 +6,5 @@ TEST_CASE("Some test") {
 }
 
 TEST_CASE("Some test 2") {
-    REQUIRE ( 1 == 1 );
+    REQUIRE ( 1 == 1);
 }
