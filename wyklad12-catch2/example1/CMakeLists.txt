@@ -38,10 +38,8 @@ target_link_libraries(tests Catch)
 enable_testing()
 
 add_test( NAME tests 
-          COMMAND "${CMAKE_BINARY_DIR}/tests "
+          COMMAND "${CMAKE_BINARY_DIR}/tests"
           WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"  )
 
-add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
-                  DEPENDS tests)
 
 
