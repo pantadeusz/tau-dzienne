@@ -32,6 +32,7 @@ file(GLOB_RECURSE lib_SOURCES "src/*.cpp")
 file(GLOB_RECURSE app_TESTS "tests/*.cpp")
 
 #add_executable(app ${app_SOURCES})
+add_library( fastrpn SHARED ${lib_SOURCES} )
 add_executable(tests EXCLUDE_FROM_ALL ${app_TESTS} ${lib_SOURCES} ) 
 target_link_libraries(tests Catch)
 
