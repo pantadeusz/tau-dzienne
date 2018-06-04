@@ -1,6 +1,6 @@
 #include "catch.hpp"
 
-#include <lib.hpp>
+#include <rpn.hpp>
 
 using Catch::Matchers::EndsWith; // or Catch::EndsWith
 
@@ -10,7 +10,7 @@ TEST_CASE("Some test") {
 }
 
 TEST_CASE("Some test 2") {
-    REQUIRE ( omp_count("10 2 +") == 12 );
+    REQUIRE ( rpn_count("10 a24sd +") == 12 );
 }
 
 SCENARIO ("Simple scenario") {

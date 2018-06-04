@@ -3,6 +3,6 @@
 
 #include <string>
 
-double omp_count(const std::string &program);
+double rpn_count(const std::string &program);
 
 #endif

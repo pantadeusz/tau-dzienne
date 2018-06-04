@@ -1,4 +1,4 @@
-#include "lib.hpp"
+#include "rpn.hpp"
 
 #include <map>
 #include <functional>
@@ -7,7 +7,7 @@
 #include <list>
 #include <iostream>
 
-double omp_count(std::vector < std::string > & formula_tokens) {
+double rpn_count(std::vector < std::string > & formula_tokens) {
 	
 	auto pop = [](std::list < double > &stack){
 		auto ret = stack.back();
@@ -38,22 +38,20 @@ double omp_count(std::vector < std::string > & formula_tokens) {
 		if (commands.count(token)) {
 			commands[token](stack);
 		} else {
-			stack.push_back(std::stod(token));
+			try {
+				stack.push_back(std::stod(token));
+			} catch (...) {
+				throw std::invalid_argument(std::string("unrecognized token ") + token);
+			}
 		}
 	}
 	return stack.back();
 }
 
-double omp_count(const std::string &program) {
+double rpn_count(const std::string &program) {
 	std::regex re(" ");
     std::sregex_token_iterator first{program.begin(), program.end(), re, -1}, last;
     std::vector<std::string> program_tokens {first, last};
-    return omp_count(program_tokens);
+    return rpn_count(program_tokens);
 }
-/*
-int main(int argc, char **argv) {
-	
-	std::string program = "3 10 2 / 3 - *"; // wzór w ONP
-		
-	return 0;
-} */
+
