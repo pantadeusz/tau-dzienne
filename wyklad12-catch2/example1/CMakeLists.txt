@@ -9,7 +9,8 @@ set (testycpp_VERSION_MINOR 1)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_EXTENSIONS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
@@ -31,10 +32,8 @@ file(GLOB_RECURSE lib_SOURCES "src/*.cpp")
 file(GLOB_RECURSE app_TESTS "tests/*.cpp")
 
 #add_executable(app ${app_SOURCES})
-add_executable(tests EXCLUDE_FROM_ALL ${app_TESTS} ) 
+add_executable(tests EXCLUDE_FROM_ALL ${app_TESTS} ${lib_SOURCES} ) 
 target_link_libraries(tests Catch)
-
-
 
 
 enable_testing()
