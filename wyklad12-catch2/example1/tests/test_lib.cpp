@@ -10,7 +10,7 @@ TEST_CASE("Some test") {
 }
 
 TEST_CASE("Some test 2") {
-    REQUIRE ( rpn_count("10 a24sd +") == 12 );
+    REQUIRE ( rpn_count("10 2 +") == 12 );
 }
 
 SCENARIO ("Simple scenario") {
