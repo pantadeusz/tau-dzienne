@@ -28,7 +28,7 @@ public class PersonInMemoryDao implements Dao<Person> {
     public void update(Person o) throws IllegalArgumentException {
         if (!persons.containsKey(o.getId()))
             throw new IllegalArgumentException("Key does not exist");
-        persons.put(new Long(o.getId()), o);
+        persons.put(o.getId(), o);
     }
 
     @Override

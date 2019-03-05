@@ -1,8 +1,8 @@
 package pl.edu.pjwstk.lab2.domain;
 
 public class Person {
-    long id;
-    String name;
+    private long id;
+    private String name;
 
     public void setId(long i) {
         id  = i;
