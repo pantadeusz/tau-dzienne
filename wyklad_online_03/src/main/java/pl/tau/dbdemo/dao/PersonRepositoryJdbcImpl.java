@@ -34,7 +34,7 @@ public class PersonRepositoryJdbcImpl implements PersonRepository {
                         + "name varchar(20) NOT NULL, " + "yob integer)");
     }
 
-    public boolean isDatabaseReady() {
+    private boolean isDatabaseReady() {
         try {
             ResultSet rs = connection.getMetaData().getTables(null, null, null, null);
             boolean tableExists = false;
