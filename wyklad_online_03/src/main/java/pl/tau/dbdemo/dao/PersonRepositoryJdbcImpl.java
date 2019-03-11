@@ -1,4 +1,4 @@
-package pl.tau.dbdemo.repository;
+package pl.tau.dbdemo.dao;
 
 import pl.tau.dbdemo.domain.Person;
 
@@ -12,14 +12,9 @@ public class PersonRepositoryJdbcImpl implements PersonRepository {
 
     private PreparedStatement addPersonStmt;
     private PreparedStatement getAllPersonsStmt;
-
     private PreparedStatement deletePersonStmt;
-
     private PreparedStatement getPersonStmt;
-
     private PreparedStatement updatePersonStmt;
-
-	private PreparedStatement deleteAllPersonsStmt;
 
     public PersonRepositoryJdbcImpl(Connection connection) throws SQLException {
         this.connection = connection;
@@ -102,7 +97,6 @@ public class PersonRepositoryJdbcImpl implements PersonRepository {
             "INSERT INTO Person (name, yob) VALUES (?, ?)",
                 Statement.RETURN_GENERATED_KEYS);
         deletePersonStmt = connection.prepareStatement("DELETE FROM Person where id = ?");
-        deleteAllPersonsStmt = connection.prepareStatement("DELETE FROM Person");
         getAllPersonsStmt = connection.prepareStatement("SELECT id, name, yob FROM Person ORDER BY id");
         getPersonStmt = connection.prepareStatement("SELECT id, name, yob FROM Person WHERE id = ?");
         updatePersonStmt = connection.prepareStatement("UPDATE Person SET name=?,yob=? WHERE id = ?");
@@ -157,19 +151,4 @@ public class PersonRepositoryJdbcImpl implements PersonRepository {
         }
         throw new SQLException("Person with id " + id + " does not exist");
     }
-
-    @Override
-    public String introduceSelf() {
-        return null;
-    }
-
-    @Override
-    public int deleteAll() {
-        try {
-            return deleteAllPersonsStmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new IllegalStateException(e.getMessage() + "\n" + e.getStackTrace().toString());
-        }
-    }
-
 }

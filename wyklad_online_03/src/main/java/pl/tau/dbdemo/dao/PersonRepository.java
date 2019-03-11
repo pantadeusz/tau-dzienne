@@ -1,4 +1,4 @@
-package pl.tau.dbdemo.repository;
+package pl.tau.dbdemo.dao;
 
 // w oparciu o przyklad J Neumanna, przerobiony przez T Puzniakowskiego
 
@@ -16,7 +16,5 @@ public interface PersonRepository {
 	public int deletePerson(Person person);
 	public int updatePerson(Person person) throws SQLException;
 	public Person getPerson(long id) throws SQLException;
-	public String introduceSelf();
-	public int deleteAll();
 	public List<Person> getAllPersons();
 }

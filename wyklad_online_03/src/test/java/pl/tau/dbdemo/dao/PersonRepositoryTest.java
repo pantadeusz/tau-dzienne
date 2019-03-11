@@ -1,11 +1,9 @@
-package pl.tau.dbdemo.repository;
+package pl.tau.dbdemo.dao;
 
 import static org.junit.Assert.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+
+import org.junit.*;
+import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import pl.tau.dbdemo.domain.Person;
@@ -22,37 +20,50 @@ import java.util.logging.Logger;
 @RunWith(JUnit4.class)
 public class PersonRepositoryTest {
     private static final Logger LOGGER = Logger.getLogger(PersonRepositoryTest.class.getCanonicalName());
+
+    @Rule
+    public Timeout globalTimeout = new Timeout(1000);
+
     public static String url = "jdbc:hsqldb:hsql://localhost/workdb";
+
     PersonRepository personManager;
     List<Person> expectedDbState;
 
-    public PersonRepositoryTest() throws SQLException {
-        personManager = new PersonRepositoryJdbcImpl(DriverManager.getConnection(url));
-    }
-
-    @BeforeClass
-    public static void cleanupBeforeTests() throws SQLException{
-        new PersonRepositoryJdbcImpl(DriverManager.getConnection(url)).
-        deleteAll();
-    }
-
     @Before
-    public void setup() {
+    public void setup() throws SQLException {
+        Connection connection = DriverManager.getConnection(url);
         Random rand = new Random();
+        PreparedStatement addPersonStmt = connection.prepareStatement(
+                "INSERT INTO Person (name, yob) VALUES (?, ?)",
+                Statement.RETURN_GENERATED_KEYS);
+
         expectedDbState = new LinkedList<Person>();
         for (int i = 0; i < 10; i++) {
-            Person p = new Person("Matuzalem" + rand.nextInt(1000), 1000 + rand.nextInt(1000));
-            LOGGER.log(Level.INFO,"ADDING with ID = " + p.getId());
-            personManager.addPerson(p); // ustawione ID na to co dodano do bazy
-            LOGGER.log(Level.INFO,"     + with ID = " + p.getId());
-            expectedDbState.add(p);
+            Person person = new Person("Matuzalem" + rand.nextInt(1000), 1000 + rand.nextInt(1000));
+            try {
+                addPersonStmt.setString(1, person.getName());
+                addPersonStmt.setInt(2, person.getYob());
+                addPersonStmt.executeUpdate();
+                ResultSet generatedKeys = addPersonStmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    person.setId(generatedKeys.getLong(1));
+                }
+            } catch (SQLException e) {
+                throw new IllegalStateException(e.getMessage() + "\n" + e.getStackTrace().toString());
+            }
+
+            expectedDbState.add(person);
         }
+        personManager = new PersonRepositoryJdbcImpl(connection);
     }
 
     @After
-    public void cleanup() {
-        for (Person p : expectedDbState) {
-            personManager.deletePerson(p);
+    public void cleanup() throws SQLException{
+        Connection connection = DriverManager.getConnection(url);
+        try {
+            connection.prepareStatement("DELETE FROM Person").executeUpdate();
+        } catch (Exception e) {
+            LOGGER.log(Level.FINEST,"Probably the database was not yet initialized");
         }
     }
 
@@ -96,7 +107,6 @@ public class PersonRepositoryTest {
     public void checkUpdatingFailure() throws SQLException {
         Person p = new Person("Janusz",123);
         assertEquals(1, personManager.updatePerson(p));
-//        assertThat(personManager.getAllPersons(), equalTo(expectedDbState));
     }
 
 }
