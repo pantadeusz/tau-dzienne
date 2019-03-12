@@ -8,7 +8,7 @@ import java.util.List;
 
 import pl.tau.dbdemo.domain.Person;
 
-public interface PersonRepository {
+public interface PersonDao {
 	public Connection getConnection();
 
 	public void setConnection(Connection connection) throws SQLException;

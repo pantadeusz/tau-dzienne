@@ -1,12 +1,13 @@
 package pl.tau.dbdemo.dao;
 
+import pl.tau.dbdemo.dao.PersonDao;
 import pl.tau.dbdemo.domain.Person;
 
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PersonRepositoryJdbcImpl implements PersonRepository {
+public class PersonDaoJdbcImpl implements PersonDao {
 
     private Connection connection;
 
@@ -16,7 +17,7 @@ public class PersonRepositoryJdbcImpl implements PersonRepository {
     private PreparedStatement getPersonStmt;
     private PreparedStatement updatePersonStmt;
 
-    public PersonRepositoryJdbcImpl(Connection connection) throws SQLException {
+    public PersonDaoJdbcImpl(Connection connection) throws SQLException {
         this.connection = connection;
         if (!isDatabaseReady()) {
             createTables();
@@ -24,7 +25,7 @@ public class PersonRepositoryJdbcImpl implements PersonRepository {
         setConnection(connection);
     }
 
-    public PersonRepositoryJdbcImpl() throws SQLException {
+    public PersonDaoJdbcImpl() throws SQLException {
     }
 
     public void createTables() throws SQLException {
