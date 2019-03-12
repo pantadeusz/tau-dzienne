@@ -19,9 +19,9 @@ public class PersonDaoJdbcImpl implements PersonDao {
 
     public PersonDaoJdbcImpl(Connection connection) throws SQLException {
         this.connection = connection;
-        if (!isDatabaseReady()) {
-            createTables();
-        }
+//        if (!isDatabaseReady()) {
+//            createTables();
+//        }
         setConnection(connection);
     }
 
