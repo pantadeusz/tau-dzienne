@@ -6,6 +6,7 @@ import org.junit.*;
 import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.*;
@@ -66,21 +67,23 @@ public class PersonDaoTest {
     Connection connection;
     @Mock
     PreparedStatement selectStatementMock;
+    @Mock
+    PreparedStatement insertStatementMock;
 
 
     @Before
     public void setup() throws SQLException {
         random = new Random();
-        //connection = DriverManager.getConnection(url);
         initialDatabaseState = new LinkedList<>();
         for (int i = 0; i < 10;i++) {
             Person person = new Person();
-            person.setId(i);//Math.abs((0x0f1312 ^ i) ^ (0x0f12a << i) ^ (0x0f12a>>i)));
+            person.setId(i);
             person.setName("janek"+random.nextInt(1000));
             person.setYob(random.nextInt(50)+1950);
             initialDatabaseState.add(person);
         }
         Mockito.when(connection.prepareStatement("SELECT id, name, yob FROM Person ORDER BY id")).thenReturn(selectStatementMock);
+        Mockito.when(connection.prepareStatement("INSERT INTO Person (name, yob) VALUES (?, ?)",Statement.RETURN_GENERATED_KEYS)).thenReturn(insertStatementMock);
     }
 
     @Test
@@ -125,5 +128,29 @@ public class PersonDaoTest {
         verify(mockedResultSet, times(initialDatabaseState.size())).getString("name");
         verify(mockedResultSet, times(initialDatabaseState.size())).getInt("yob");
         verify(mockedResultSet, times(initialDatabaseState.size()+1)).next();
+    }
+
+    @Test
+    public void checkAddingInOrder() throws Exception {
+        // przygotujmy mocki
+        // tym razem weryfikujemy takze kolejnosc wykonania
+
+        InOrder inorder = inOrder(insertStatementMock);
+        when(insertStatementMock.executeUpdate()).thenReturn(1);
+
+        // nasza testowana metoda
+
+        PersonDaoJdbcImpl dao = new PersonDaoJdbcImpl();
+        dao.setConnection(connection);
+        Person person = new Person();
+        person.setName("Waclaw");
+        person.setYob(1980);
+        dao.addPerson(person);
+
+        // sprawdzamy wykonanie mocka
+
+        inorder.verify(insertStatementMock, times(1)).setString(1, "Waclaw");
+        inorder.verify(insertStatementMock, times(1)).setInt(2, 1980);
+        inorder.verify(insertStatementMock).executeUpdate();
     }
 }

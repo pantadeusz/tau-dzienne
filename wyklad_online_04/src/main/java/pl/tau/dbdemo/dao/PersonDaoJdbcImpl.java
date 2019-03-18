@@ -11,6 +11,7 @@ public class PersonDaoJdbcImpl implements PersonDao
 {
 
     public PreparedStatement preparedStatementGetAll;
+    public PreparedStatement preparedStatementInsert;
 
     Connection connection;
     @Override
@@ -23,6 +24,9 @@ public class PersonDaoJdbcImpl implements PersonDao
         this.connection = connection;
         preparedStatementGetAll = connection.prepareStatement(
                 "SELECT id, name, yob FROM Person ORDER BY id");
+        preparedStatementInsert= connection.prepareStatement(
+                "INSERT INTO Person (name, yob) VALUES (?, ?)",
+                Statement.RETURN_GENERATED_KEYS);
     }
 
     @Override
@@ -42,5 +46,13 @@ public class PersonDaoJdbcImpl implements PersonDao
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public int addPerson(Person person) throws SQLException {
+        preparedStatementInsert.setString(1, person.getName());
+        preparedStatementInsert.setInt(2, person.getYob());
+        int r = preparedStatementInsert.executeUpdate();
+        return r;
     }
 }
