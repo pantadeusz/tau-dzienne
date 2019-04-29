@@ -82,8 +82,15 @@ public class PersonDaoTest {
             person.setYob(random.nextInt(50)+1950);
             initialDatabaseState.add(person);
         }
-        Mockito.when(connection.prepareStatement("SELECT id, name, yob FROM Person ORDER BY id")).thenReturn(selectStatementMock);
-        Mockito.when(connection.prepareStatement("INSERT INTO Person (name, yob) VALUES (?, ?)",Statement.RETURN_GENERATED_KEYS)).thenReturn(insertStatementMock);
+        Mockito.when(
+                connection.
+                        prepareStatement("SELECT id, name, yob FROM Person ORDER BY id")
+                ).thenReturn(selectStatementMock);
+        Mockito.when(
+                connection
+                        .prepareStatement("INSERT INTO Person (name, yob) VALUES (?, ?)",
+                                Statement.RETURN_GENERATED_KEYS)
+        ).thenReturn(insertStatementMock);
     }
 
     @Test
@@ -99,8 +106,10 @@ public class PersonDaoTest {
         // nagrajmy zachowanie mocka
         PersonDaoJdbcImpl dao = new PersonDaoJdbcImpl();
         dao.setConnection(connection);
-        assertNotNull(dao.preparedStatementGetAll);
         Mockito.verify(connection).prepareStatement("SELECT id, name, yob FROM Person ORDER BY id");
+        verify(connection).prepareStatement("INSERT INTO Person (name, yob) VALUES (?, ?)",
+                Statement.RETURN_GENERATED_KEYS);
+        assertNotNull(dao.preparedStatementGetAll);
     }
 
     @Test
