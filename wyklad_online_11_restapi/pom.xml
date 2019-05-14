@@ -6,7 +6,7 @@
 	<groupId>org.springframework</groupId>
 	<artifactId>spring-hibernate-api-demo</artifactId>
 	<version>0.1.0</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<properties>
 		<org.hibernate.version>5.1.6.Final</org.hibernate.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
