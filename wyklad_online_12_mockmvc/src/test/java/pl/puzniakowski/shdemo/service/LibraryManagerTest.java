@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 //@Commit
 @Transactional ("txManager")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class LibraryManagerRealServerTest {
+public class LibraryManagerTest {
 
 	@Autowired
     LibraryManager libraryManager;

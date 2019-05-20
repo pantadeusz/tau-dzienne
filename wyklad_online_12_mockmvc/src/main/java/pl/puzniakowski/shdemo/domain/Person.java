@@ -1,5 +1,8 @@
 package pl.puzniakowski.shdemo.domain;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,6 +69,21 @@ public class Person {
 		p.firstName = firstName;
 		p.registrationDate = registrationDate;
 		return p;
+	}
+
+	@Override
+	public String toString() {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			return "<ERROR>";
+		}
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		return other.toString().equals(this.toString());
 	}
 
 }

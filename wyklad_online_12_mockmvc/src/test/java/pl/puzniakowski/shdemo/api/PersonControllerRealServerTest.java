@@ -3,6 +3,7 @@ package pl.puzniakowski.shdemo.api;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.puzniakowski.shdemo.domain.Book;
@@ -27,16 +27,20 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+
+/**
+ * This example creates real server that will handle requests. The spring test will
+ * query the server and tests checks the correctness of responses
+ */
+
+@Ignore
 @RunWith(SpringRunner.class)
-//@SpringBootTest
 @ComponentScan({"pl.puzniakowski"})
 @PropertySource("classpath:jdbc.properties")
 @ImportResource({"classpath:/beans.xml"})
 @Rollback
-//@Commit
-//@Transactional ("txManager")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PersonControllerTest {
+public class PersonControllerRealServerTest {
 
     @LocalServerPort
     private int port;
@@ -47,7 +51,6 @@ public class PersonControllerTest {
 
     @Autowired
     LibraryManager libraryManager; // manager is needed for direct manipulation with database
-
 
     @Test
     public void contextLoads() throws Exception {
@@ -67,7 +70,6 @@ public class PersonControllerTest {
                 this.restTemplate.getForObject("http://localhost:" + port + "/persons",
                         List.class)).isNotNull();
     }
-
 
     @Test
     public void getAllShouldReturnResultsThatWerePreviouslyPutIntoDatabase() throws Exception {

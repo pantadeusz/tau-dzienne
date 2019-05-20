@@ -26,7 +26,7 @@ public class PersonController {
         return persons;
     }
 
-    @RequestMapping(value = "/persons",method = RequestMethod.POST)
+    @RequestMapping(value = "/person",method = RequestMethod.POST)
     public Person addClient(@RequestBody Person nperson) {
         nperson.setId(libraryManager.addClient(nperson));
         return nperson;
