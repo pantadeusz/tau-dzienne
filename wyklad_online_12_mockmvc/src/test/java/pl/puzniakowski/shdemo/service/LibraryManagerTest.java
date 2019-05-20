@@ -30,6 +30,7 @@ import pl.puzniakowski.shdemo.domain.Book;
 import pl.puzniakowski.shdemo.domain.Person;
 import org.springframework.transaction.annotation.Transactional;
 
+@Ignore // You can turn it on if needed
 @RunWith(SpringRunner.class)
 //@SpringBootTest
 @ComponentScan({"pl.puzniakowski"})

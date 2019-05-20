@@ -23,6 +23,10 @@ import pl.puzniakowski.shdemo.domain.Person;
 import org.springframework.transaction.annotation.Transactional;
 import pl.puzniakowski.shdemo.service.LibraryManager;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 //@SpringBootTest
 @ComponentScan({"pl.puzniakowski"})
@@ -30,7 +34,7 @@ import pl.puzniakowski.shdemo.service.LibraryManager;
 @ImportResource({"classpath:/beans.xml"})
 @Rollback
 //@Commit
-@Transactional ("txManager")
+//@Transactional ("txManager")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PersonControllerTest {
 
@@ -41,16 +45,47 @@ public class PersonControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    LibraryManager libraryManager; // manager is needed for direct manipulation with database
+
+
     @Test
     public void contextLoads() throws Exception {
         assertNotNull(controller);
     }
 
     @Test
-    public void greetingShouldReturnDefaultMessage() throws Exception {
+    public void greetingShouldReturnHelloMessage() throws Exception {
         assertThat(
                 this.restTemplate.getForObject("http://localhost:" + port + "/",
                 String.class)).contains("Hello");
     }
+
+    @Test
+    public void getAllShouldReturnSomeResultsFromDatabase() throws Exception {
+        assertThat(
+                this.restTemplate.getForObject("http://localhost:" + port + "/persons",
+                        List.class)).isNotNull();
+    }
+
+
+    @Test
+    public void getAllShouldReturnResultsThatWerePreviouslyPutIntoDatabase() throws Exception {
+
+        Person newPerson = new Person();
+        newPerson.setFirstName("Restowy Rester");
+        Long newId = libraryManager.addClient(newPerson);
+        assertEquals(newId,newPerson.getId());
+        List<java.util.LinkedHashMap> personsFromRest = this.restTemplate.getForObject("http://localhost:" + port + "/persons",
+                List.class);
+
+        boolean found = false;
+        for (LinkedHashMap p: personsFromRest) {
+            if (p.get("id").toString().equals(newId.toString())) found = true;
+        }
+        System.out.println(personsFromRest);
+        assertTrue(found);
+    }
+
 
 }
