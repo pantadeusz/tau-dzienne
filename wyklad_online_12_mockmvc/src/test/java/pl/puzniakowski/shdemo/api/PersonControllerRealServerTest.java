@@ -71,21 +71,15 @@ public class PersonControllerTest {
 
     @Test
     public void getAllShouldReturnResultsThatWerePreviouslyPutIntoDatabase() throws Exception {
-
         Person newPerson = new Person();
         newPerson.setFirstName("Restowy Rester");
         Long newId = libraryManager.addClient(newPerson);
-        assertEquals(newId,newPerson.getId());
-        List<java.util.LinkedHashMap> personsFromRest = this.restTemplate.getForObject("http://localhost:" + port + "/persons",
-                List.class);
-
+        List<java.util.LinkedHashMap> personsFromRest =
+                this.restTemplate.getForObject("http://localhost:" + port + "/persons", List.class);
         boolean found = false;
         for (LinkedHashMap p: personsFromRest) {
             if (p.get("id").toString().equals(newId.toString())) found = true;
         }
-        System.out.println(personsFromRest);
         assertTrue(found);
     }
-
-
 }
