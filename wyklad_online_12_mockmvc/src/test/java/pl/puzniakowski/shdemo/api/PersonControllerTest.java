@@ -1,0 +1,56 @@
+package pl.puzniakowski.shdemo.api;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.test.annotation.Commit;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.test.context.junit4.SpringRunner;
+import pl.puzniakowski.shdemo.domain.Book;
+import pl.puzniakowski.shdemo.domain.Person;
+import org.springframework.transaction.annotation.Transactional;
+import pl.puzniakowski.shdemo.service.LibraryManager;
+
+@RunWith(SpringRunner.class)
+//@SpringBootTest
+@ComponentScan({"pl.puzniakowski"})
+@PropertySource("classpath:jdbc.properties")
+@ImportResource({"classpath:/beans.xml"})
+@Rollback
+//@Commit
+@Transactional ("txManager")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class PersonControllerTest {
+
+    @LocalServerPort
+    private int port;
+    @Autowired
+    private PersonController controller;
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Test
+    public void contextLoads() throws Exception {
+        assertNotNull(controller);
+    }
+
+    @Test
+    public void greetingShouldReturnDefaultMessage() throws Exception {
+        assertThat(
+                this.restTemplate.getForObject("http://localhost:" + port + "/",
+                String.class)).contains("Hello");
+    }
+
+}
