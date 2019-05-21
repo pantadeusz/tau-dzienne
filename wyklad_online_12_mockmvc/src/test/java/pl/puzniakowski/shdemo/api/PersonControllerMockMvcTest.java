@@ -27,12 +27,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
+/*
+This example uses MockMvc to mock server and http requests. This way we don't need to run real server.
+We can also use Mockito to mock access to database.
+ */
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@ComponentScan({"pl.puzniakowski"})
-//@PropertySource("classpath:jdbc.properties")
-//@Rollback
 @AutoConfigureMockMvc
 public class PersonControllerMockMvcTest {
 
