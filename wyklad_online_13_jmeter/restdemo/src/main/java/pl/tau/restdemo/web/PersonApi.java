@@ -25,6 +25,10 @@ public class PersonApi {
     public String index() {
         return "This is non rest, just checking if everything works.";
     }
+    @RequestMapping("/echo/{param}")
+    public String echo(@PathVariable("param") String param) {
+        return "have " + param;
+    }
 
     @RequestMapping(value = "/person/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
