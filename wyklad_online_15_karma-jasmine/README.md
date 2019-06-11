@@ -12,6 +12,8 @@
 
 ```bash
 npm init
+npm install -s karma-browserify
+npm install --save-dev watchify
 npm install --save-dev jasmine
 npm install --save-dev karma
 npm install --save-dev karma-jasmine karma-<browser>-launcher

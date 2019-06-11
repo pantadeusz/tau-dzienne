@@ -10,13 +10,14 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
-
+    frameworks: ['jasmine','browserify'],
 
     // list of files / patterns to load in the browser
     files: [
       'node_modules/jquery/dist/jquery.min.js',
-      'js/*.js',
+      //'node_modules/requirejs/require.js',
+      //'js/*.js',
+      'js/plugin.js',
       'test/*Spec.js'
     ],
 
@@ -28,7 +29,8 @@ module.exports = function(config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
+      preprocessors: {
+        'test/indexSpec.js': ['browserify'] //  or ["coverage",'browserify']
     },
 
 
@@ -62,7 +64,7 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous
