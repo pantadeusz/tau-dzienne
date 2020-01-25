@@ -1,6 +1,4 @@
-//const {toolbox} = require("../js/toolbox.js"); // load module
-
-
+//const {toolbox} = require("../js/toolbox.js"); // load module - nodejs style
 import {toolbox} from '../js/toolbox.js';
 
 describe("cenzor", function () {

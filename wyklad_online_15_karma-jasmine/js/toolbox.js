@@ -1,6 +1,7 @@
 // js module
 export function toolbox() {
-//exports.toolbox = function() {
+//exports.toolbox = function() { // module in nodejs style
+
   // some sample function - this function will not be exported
     let reverseSimple = function(x){
       let ret = "";
