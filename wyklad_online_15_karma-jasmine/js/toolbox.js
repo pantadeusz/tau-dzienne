@@ -1,5 +1,6 @@
 // js module
-exports.toolbox = function() {
+export function toolbox() {
+//exports.toolbox = function() {
   // some sample function - this function will not be exported
     let reverseSimple = function(x){
       let ret = "";

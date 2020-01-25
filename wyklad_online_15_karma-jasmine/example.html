@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sample censor</title>
+</head>
+
+<body>
+    <p id='blaa'>Content of the document......</p>
+</body>
+
+<script type="module" lang="javascript">
+import {toolbox} from 'js/toolbox.js';
+console.log(toolbox().reverse({selector:'#blaa'}));
+</script>
+</html>

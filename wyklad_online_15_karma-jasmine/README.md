@@ -12,8 +12,8 @@
 
 ```bash
 npm init
-npm install -s karma-browserify
-npm install --save-dev watchify
+npm install -s karma-browserify # Jeśli chcemy pisać moduły w stylu nodejs
+npm install --save-dev watchify # Obserwowanie plikow
 npm install --save-dev jasmine
 npm install --save-dev karma
 npm install --save-dev karma-jasmine karma-<browser>-launcher
@@ -40,11 +40,9 @@ Inicjalizacja karmy:
 karma init
 ```
 
-Uwaga: nie potrzebujemy Require.js
-
 ### Uruchamianie programów z paczek npm
 
-Uwaga - powyższe nie zadziała tak od razu. Należy albo zainstalować w systemie pakiet karma (nie możemy tego zrobić na laboratorium), albo uruchamiamy z pakietów zainstalowanych w projekcie. Oto jak to zrobić:
+Uwaga - powyższe nie zadziała tak od razu. Należy albo zainstalować w systemie pakiet karma, albo uruchamiamy z pakietów zainstalowanych w projekcie. Oto jak to zrobić:
 
 ```bash
 function npm-do { (PATH=$(npm bin):$PATH; eval $@;) } # funkcja powłoki
@@ -53,7 +51,7 @@ function npm-do { (PATH=$(npm bin):$PATH; eval $@;) } # funkcja powłoki
 
 ## jQuery
 
-Chcielibyśmy zrobić małą wtyczkę do jQuery. Będziemy potrzebowali pakietu, który nam pozwoli w łatwy sposób używać tej biblioteki w środowisku testowym.
+Dostęp do jquery z poziomu jasmine
 
 ```bash
 npm install --save-dev jasmine-jquery
